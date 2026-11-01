@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ကျွန်တော်နှင့်ပန်းထိုးခြင်း</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Myanmar:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+
+    <style>
+         :root {
+            --bg-color: #9cb4c4;
+            /* Dusty vintage skyblue */
+            --paper-color: #f4efdf;
+            /* Warm parchment/cream */
+            --ink-color: #2c3539;
+            /* Soft charcoal */
+            --highlight-color: #6a8c9e;
+            --accent-dark: #3a505e;
+            --border-light: rgba(139, 115, 85, 0.3);
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            /* Vintage noise/texture effect */
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E"), radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.15) 100%);
+            font-family: 'Noto Serif Myanmar', serif;
+            color: var(--ink-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 60px 20px;
+            box-sizing: border-box;
+            overflow-x: hidden;
+        }
+        
+        .main-container {
+            max-width: 850px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1.2s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        
+        .main-container.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* --- Letter Section --- */
+        
+        .letter-section {
+            background-color: var(--paper-color);
+            padding: 70px 80px;
+            border-radius: 4px;
+            /* Less rounded for a physical paper feel */
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2), inset 0 0 60px rgba(139, 115, 85, 0.15), /* Sepia inner shadow */
+            inset 0 0 10px rgba(255, 255, 255, 0.6);
+            position: relative;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+        }
+        /* Aesthetic vintage border */
+        
+        .letter-section::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            border: 1px solid var(--border-light);
+            pointer-events: none;
+        }
+        
+        .date {
+            text-align: right;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.15rem;
+            color: var(--accent-dark);
+            margin-bottom: 35px;
+            letter-spacing: 0.5px;
+        }
+        
+        .letter-section h1 {
+            font-family: 'Noto Serif Myanmar', serif;
+            color: var(--accent-dark);
+            text-align: center;
+            font-size: 2.4rem;
+            margin-top: 0;
+            margin-bottom: 50px;
+            line-height: 1.5;
+            font-weight: 600;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+        }
+        
+        .letter-content p {
+            line-height: 2.4;
+            /* Elegant line height */
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            text-indent: 50px;
+            color: var(--ink-color);
+            letter-spacing: 0.3px;
+        }
+        /* Elegant drop cap */
+        
+        .letter-content p:first-of-type::first-letter {
+            float: left;
+            font-size: 4rem;
+            line-height: 0.8;
+            padding-right: 15px;
+            padding-top: 8px;
+            color: var(--highlight-color);
+            font-family: 'Noto Serif Myanmar', serif;
+            font-weight: 600;
+        }
+        /* --- Podcast Player Section --- */
+        
+        .podcast-container {
+            background-color: var(--paper-color);
+            padding: 25px;
+            border-radius: 6px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15), inset 0 0 30px rgba(139, 115, 85, 0.08), inset 0 0 10px rgba(255, 255, 255, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: -15px;
+            z-index: 5;
+            position: relative;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+            border: 1px solid var(--border-light);
+        }
+        
+        .cover-photo {
+            width: 110px;
+            height: 110px;
+            border-radius: 6px;
+            object-fit: cover;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+            border: 3px solid rgba(255, 255, 255, 0.7);
+            filter: sepia(0.2) contrast(1.1) brightness(0.9);
+        }
+        
+        .audio-controls {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .track-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        
+        .track-title {
+            font-family: 'Noto Serif Myanmar', serif;
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: var(--accent-dark);
+            line-height: 1.2;
+            text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.7);
+        }
+        
+        .track-artist {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1rem;
+            color: var(--highlight-color);
+            margin-top: 4px;
+        }
+        
+        .time-display {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.9rem;
+            color: var(--ink-color);
+            opacity: 0.8;
+            font-weight: 600;
+        }
+        
+        .controls-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .play-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--accent-dark);
+            color: var(--paper-color);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25);
+            transition: transform 0.2s ease, background-color 0.2s ease;
+            padding-left: 5px;
+            /* Offset for the play triangle */
+        }
+        
+        .play-btn.playing {
+            padding-left: 0;
+            font-size: 1.4rem;
+        }
+        
+        .play-btn:hover {
+            transform: scale(1.05);
+            background-color: var(--highlight-color);
+        }
+        
+        .progress-container {
+            flex: 1;
+            height: 8px;
+            background-color: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+            position: relative;
+            cursor: pointer;
+            box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.15);
+        }
+        
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background-color: var(--highlight-color);
+            border-radius: 4px;
+            position: relative;
+            transition: width 0.1s linear;
+        }
+        
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            right: -7px;
+            top: -4px;
+            width: 16px;
+            height: 16px;
+            background-color: var(--paper-color);
+            border: 2px solid var(--accent-dark);
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            transition: transform 0.1s ease;
+        }
+        
+        .progress-container:hover .progress-bar::after {
+            transform: scale(1.2);
+        }
+        /* --- Auto-Scrolling Marquee Gallery Section --- */
+        
+        .gallery-section {
+            width: 100vw;
+            margin-bottom: 40px;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .gallery-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 2.2rem;
+            color: var(--paper-color);
+            text-align: center;
+            margin-bottom: 40px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
+        }
+        
+        .gallery-container {
+            width: 100%;
+            overflow: hidden;
+            padding: 30px 0 60px 0;
+            position: relative;
+        }
+        
+        .gallery-track {
+            display: flex;
+            gap: 35px;
+            width: max-content;
+            /* Auto scroll animation - pauses on hover */
+            animation: scroll 35s linear infinite;
+        }
+        
+        .gallery-container:hover .gallery-track {
+            animation-play-state: paused;
+        }
+        
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            /* Translate by exactly half the track width to loop seamlessly */
+            100% {
+                transform: translateX(calc(-50% - 17.5px));
+            }
+        }
+        
+        .polaroid {
+            background-color: #fdfbf7;
+            padding: 12px 12px 50px 12px;
+            /* Authentic Polaroid padding */
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2), inset 0 0 10px rgba(0, 0, 0, 0.03);
+            border-radius: 2px;
+            flex: 0 0 auto;
+            width: 250px;
+            transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.5s ease;
+            position: relative;
+            cursor: pointer;
+        }
+        /* Translucent Washi Tape effect */
+        
+        .polaroid::before {
+            content: '';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            width: 80px;
+            height: 25px;
+            background-color: rgba(255, 245, 235, 0.45);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), inset 0 0 5px rgba(255, 255, 255, 0.3);
+            transform: translateX(-50%) rotate(-3deg);
+            z-index: 5;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+        }
+        /* Romantic Vintage Light Leak / Texture */
+        
+        .polaroid::after {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            bottom: 50px;
+            /* Covers exactly the image area */
+            background: radial-gradient(circle at top right, rgba(255, 170, 150, 0.4) 0%, transparent 60%), radial-gradient(circle at bottom left, rgba(250, 210, 140, 0.3) 0%, transparent 60%);
+            mix-blend-mode: multiply;
+            pointer-events: none;
+            z-index: 2;
+            transition: opacity 0.5s ease;
+        }
+        
+        .polaroid img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            display: block;
+            /* Warm romantic vintage film filter */
+            filter: sepia(0.3) contrast(1.1) saturate(1.2) hue-rotate(-5deg) brightness(0.95);
+            transition: filter 0.5s ease;
+        }
+        /* Alternating Scrapbook Rotations for all 10 cards */
+        
+        .polaroid:nth-child(1),
+        .polaroid:nth-child(6) {
+            transform: rotate(-3deg) translateY(5px);
+        }
+        
+        .polaroid:nth-child(2),
+        .polaroid:nth-child(7) {
+            transform: rotate(2deg) translateY(-5px);
+        }
+        
+        .polaroid:nth-child(3),
+        .polaroid:nth-child(8) {
+            transform: rotate(-1deg) translateY(8px);
+        }
+        
+        .polaroid:nth-child(4),
+        .polaroid:nth-child(9) {
+            transform: rotate(3deg) translateY(-2px);
+        }
+        
+        .polaroid:nth-child(5),
+        .polaroid:nth-child(10) {
+            transform: rotate(-2deg) translateY(4px);
+        }
+        
+        .polaroid:nth-child(even)::before {
+            transform: translateX(-50%) rotate(2deg);
+        }
+        
+        .polaroid:hover {
+            transform: rotate(0deg) scale(1.08) translateY(-15px) !important;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.35);
+            z-index: 10;
+        }
+        
+        .polaroid:hover img {
+            filter: sepia(0.1) contrast(1.05) saturate(1.1) brightness(1);
+        }
+        
+        .polaroid:hover::after {
+            opacity: 0.4;
+            /* Slightly fade the light leak on hover */
+        }
+        /* Responsive */
+        
+        @media (max-width: 768px) {
+            .podcast-container {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+                padding: 20px;
+            }
+            .track-info {
+                flex-direction: column;
+                align-items: center;
+                gap: 8px;
+            }
+            .cover-photo {
+                width: 140px;
+                height: 140px;
+            }
+            .letter-section {
+                padding: 40px 30px;
+            }
+            .letter-section h1 {
+                font-size: 1.8rem;
+                margin-bottom: 30px;
+            }
+            .letter-content p {
+                text-indent: 30px;
+                font-size: 1.05rem;
+                line-height: 2.2;
+            }
+            .polaroid {
+                width: 200px;
+            }
+            .polaroid img {
+                height: 220px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="main-container" id="mainContainer">
+
+        <!-- Podcast Player Section -->
+        <div class="podcast-container">
+            <img src="img/photo_2026-11-01 23.18.28.jpeg" alt="Cover Art" class="cover-photo">
+
+            <div class="audio-controls">
+                <div class="track-info">
+                    <div>
+                        <div class="track-title">တိမ်တွေနေတဲ့အရပ်စီ</div>
+                        <div class="track-artist">A Letter's Melody</div>
+                    </div>
+                    <div class="time-display"><span id="currentTime">00:00</span> / 03:45</div>
+                </div>
+
+                <div class="controls-row">
+                    <button class="play-btn" id="playBtn">▶</button>
+                    <div class="progress-container" id="progressContainer">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dummy Audio File to ensure JS interactions work smoothly -->
+            <audio id="bgMusic" loop>
+                 <source src="msc/တိမ်တွေနေတဲ့အရပ်ချစ်သုဝေlyrics_video_1793553292807.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+
+        <!-- Letter Section -->
+        <section class="letter-section">
+            <div class="date">November 1, 2026</div>
+            <h1>ကျွန်တော်နှင့်ပန်းထိုးခြင်း</h1>
+            <div class="letter-content">
+                <p>ဒီနေ့မနက်မှာတော့ အမေနဲ့အတူ ဈေးတန်းလေးဆီ လိုက်သွားဖြစ်ခဲ့ပါတယ်။ ဈေးဝယ်ရင်း ဘုရားပန်းသည်လေးဆီ အရောက်မှာတော့ ကျွန်တော့်မျက်ဝန်းထဲကို အရင်ဆုံး ဝင်ရောက်လာတာကတော့ ရွှေဝါရောင်သန်းနေတဲ့ ဂန္ဓာမာပန်းလေးတွေနဲ့အတူ စာပိုဒ်လေးတစ်ခုပါပဲ။</p>
+
+                <p>ထိုခဏချင်းမှာပဲ... ထိုစာပိုဒ်ပိုင်ရှင်လေး ကိုယ့်အနားမှာ ရှိနေခဲ့ရင် ဘယ်လောက်တောင် ကောင်းလိုက်မလဲဆိုပြီး ရင်ထဲကနေ တသသနဲ့ တမ်းတမိသွားပါတယ်။ ထိုတမ်းတမှုကို သက်သေပြဖို့အတွက် အဝါရောင် ဂန္ဓာမာပန်းစည်းလေးတစ်စည်းကို မေတ္တာရှေ့ထားပြီး ဝယ်ယူခဲ့မိပါတော့တယ်...</p>
+
+                <p>ကျွန်တော်က ပန်းတွေနဲ့ ဘယ်တော့မှ မစိမ်းခဲ့ဖူးပါဘူး။ ပန်းပင်လေးတွေကိုယ်တိုင်လည်း စိုက်ပျိုးဖူးသလို၊ ပျိုးပင်လေးတွေကိုလည်း ဝယ်ယူခဲ့ဖူးပါတယ်။ ဒါပေမဲ့... တစ်စုံတစ်ယောက်ကို တမ်းတလွမ်းဆွတ်ရင်း ပန်းဝယ်ဖူးတာကတော့ ဒါဟာ ကျွန်တော့်ဘဝမှာ ပထမဆုံးအကြိမ်ပါပဲ။</p>
+
+                <p>အိမ်ကို ရောက်တာနဲ့ ထိုပန်းလေးတွေကို သေချာဂရုတစိုက် ဆေးကြောဖြစ်ခဲ့တယ်။ အစကတော့ ထိုစာပိုဒ်ပိုင်ရှင်လေးအတွက် ဘုရားမှာ ပန်းလှူမယ်လို့ စဉ်းစားမိသားပါ။ ဒါပေမဲ့ ဘုရားပန်းထိုးလိုက်ရင် ကျွန်တော့်မှာ အဲ့ဒီပန်းလေးတွေကို နမ်းရှိုက်ခွင့် မရှိတော့ဘူးလေ။
+                    ဂန္ဓာမာပန်းတွေမှာ အနံ့မရှိဘူးလို့ ပြောကြရင်ဖြင့် ကျွန်တော် အဲ့ဒီလူတွေနဲ့ ငြင်းခုံမိမှာ သေချာပါတယ်။ ဘာလို့လဲဆိုတော့... ဒီဂန္ဓာမာပန်းလေးတွေကို စမြင်ကတည်းက သူ့ရဲ့ ရနံ့ဟာ ချိုမြိန်တဲ့ 'Candy' အနံ့သင်းသင်းလေးလို ကျွန်တော် ခံစားပုံဖော်မိနေလို့ပါပဲ။
+                    အဲ့ဒီရနံ့လေးကို ကျွန်တော် အမြဲတမ်း နမ်းရှိုက်ချင်နေမိတယ်။</p>
+
+                <p>အဲ့ဒီနောက်မှာတော့ အတွေးတစ်ခု ဝင်လာခဲ့တယ်။ ဒီပန်းလေးတွေကို ပန်းအိုးထဲမှာ ထည့်ပြီး ကျွန်တော့်ရဲ့ စားပွဲခုံပေါ်မှာ အမြဲတမ်း တင်ထားမယ်။ ဒါမှသာ... ကျွန်တော် တမ်းတမိတိုင်း ထိုပန်းလေးတွေကို နမ်းရှိုက်ခွင့်ရမှာပေါ့။ အဲ့ဒီလိုတွေးမိရင်း ဖုန်းမျက်နှာပြင်ပေါ်က
+                    နာရီကို ငေးကြည့်မိလိုက်တယ်... အဲဒီအချိန်မှာ ဂျာမနီ (Germany) ရဲ့ အချိန်ကတော့ မနက် ၃ နာရီ ၂၇ မိနစ်ပေါ့။ အဲ့ဒီလို အချိန်မျိုးမှာပဲ ကျွန်တော့်ရဲ့ တမ်းတရသူလေး အိပ်မက်လှလှတွေ မက်နေဖို့အတွက် ကျွန်တော် တိတ်တခိုး ဆုတောင်းပေးမိလိုက်ပါတော့တယ်...</p>
+
+                <p>ကျွန်တော့်ဘဝမှာ ဒါက ပထမဆုံးအကြိမ် ပန်းအိုးထဲ ပန်းထည့်အလှဆင်ခြင်းပါပဲ...<br>ပန်းထိုးရင်းနဲ့ နားထောင်ဖြစ်ခဲ့တဲ့ 'တိမ်တွေနေတဲ့အရပ်စီ' ဆိုတဲ့ သီချင်းလေးရဲ့ တေးသွားနဲ့အတူ... အဝေးမှာရှိနေတဲ့ ထိုစာပိုဒ်ပိုင်ရှင်လေးဆီကို ကိုယ့်ရဲ့ ရင်ခုန်သံတွေ
+                    တိမ်တွေလို လွင့်ပျံသွားဖို့ တိတ်တခိုး မျှော်လင့်မိခဲ့တယ်။</p>
+            </div>
+        </section>
+
+        <!-- Auto-Scrolling Marquee Gallery Section -->
+        <section class="gallery-section">
+            <h2>Captured Memories</h2>
+            <div class="gallery-container">
+                <div class="gallery-track">
+                    <!-- First Set of 5 Images -->
+                    <div class="polaroid">
+                        <img src="img/photo_2026-11-01 15.12.31.jpeg" alt="Memory 1">
+                    </div>
+                    <div class="polaroid">
+                        <img src="img/photo_2026-11-01 22.17.03.jpeg" alt="Memory 2">
+                    </div>
+                    <div class="polaroid">
+                        <img src="img/photo_2026-11-01 22.17.08.jpeg" alt="Memory 3">
+                    </div>
+
+                    <div class="polaroid">
+                        <img src="img/photo_2026-11-01 23.18.21.jpeg" alt="Memory 5">
+                    </div>
+                    <div class="polaroid">
+                        <img src="img/photo_2026-11-01 22.17.11 copy.jpeg" alt="Memory 4">
+                    </div>
+                    <div class="polaroid">
+                        <img src="img/photo_2026-11-01 15.12.18.jpeg" alt="Memory 5">
+                    </div>
+
+                    <!-- Second Set of 5 Images (Duplicated to create seamless infinite loop) -->
+                    <div class="polaroid">
+                        <img src="img/photo_2026-11-01 15.12.31.jpeg" alt="Memory 1">
+                    </div>
+                    <div class="polaroid">
+                        <img src="img/photo_2026-11-01 22.17.03.jpeg" alt="Memory 2">
+                    </div>
+                    <div class="polaroid">
+                        <img src="img/photo_2026-11-01 22.17.08.jpeg" alt="Memory 3">
+                    </div>
+
+                    <div class="polaroid">
+                        <img src="img/photo_2026-11-01 23.18.21.jpeg" alt="Memory 5">
+                    </div>
+                    <div class="polaroid">
+                        <img src="img/photo_2026-11-01 22.17.11 copy.jpeg" alt="Memory 4">
+                    </div>
+                    <div class="polaroid">
+                        <img src="img/photo_2026-11-01 15.12.18.jpeg" alt="Memory 5">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // --- Audio Player Logic ---
+        const playBtn = document.getElementById('playBtn');
+        const audio = document.getElementById('bgMusic');
+        const progressBar = document.getElementById('progressBar');
+        const progressContainer = document.getElementById('progressContainer');
+        const currentTimeDisplay = document.getElementById('currentTime');
+
+        let isPlaying = false;
+        let mockProgressInterval;
+        let progress = 0;
+        const totalDuration = 225; // Simulated 3 minutes and 45 seconds
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        playBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                audio.pause();
+                playBtn.innerHTML = '▶';
+                playBtn.classList.remove('playing');
+                clearInterval(mockProgressInterval);
+            } else {
+                audio.play().catch(e => console.log("Simulating playback without real audio source."));
+                playBtn.innerHTML = '॥';
+                playBtn.classList.add('playing');
+
+                mockProgressInterval = setInterval(() => {
+                    progress += 0.25;
+                    if (progress > totalDuration) progress = 0;
+
+                    const percent = (progress / totalDuration) * 100;
+                    progressBar.style.width = `${percent}%`;
+                    currentTimeDisplay.innerText = formatTime(progress);
+                }, 250);
+            }
+            isPlaying = !isPlaying;
+        });
+
+        // Click to seek functionality
+        progressContainer.addEventListener('click', (e) => {
+            const width = progressContainer.clientWidth;
+            const clickX = e.offsetX;
+            const percentage = (clickX / width);
+
+            progress = percentage * totalDuration;
+            progressBar.style.width = `${percentage * 100}%`;
+            currentTimeDisplay.innerText = formatTime(progress);
+
+            if (audio.duration && !isNaN(audio.duration)) {
+                audio.currentTime = percentage * audio.duration;
+            }
+        });
+
+        // --- Page entry animation ---
+        document.addEventListener("DOMContentLoaded", () => {
+            setTimeout(() => {
+                document.getElementById("mainContainer").classList.add("visible");
+            }, 200);
+        });
+    </script>
+</body>
+
+</html>
